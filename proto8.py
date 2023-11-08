@@ -90,9 +90,6 @@ db = data_to_db(directoryloader)
 
 ### 사용자 입력이 들어왔을 때, 사용자와 챗봇의 대화 생성
 
-# 사용자 인풋, 챗봇 아웃풋을 벡터DB에 저장
-in_out_save = {} 
-
 # ★★★ 사용자 인풋 창 ★★★
 if input := st.chat_input("What is up?"):   # ★★★ 사용자 인풋 창 ★★★
     
