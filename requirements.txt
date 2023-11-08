@@ -5,3 +5,4 @@ chromadb
 tiktoken
 streamlit_extras
 pysqlite3-binary
+sentence-transformers
