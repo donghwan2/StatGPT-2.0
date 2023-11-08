@@ -67,8 +67,8 @@ def data_to_db(loader):
     persist_directory = 'db'
 
     # 임베딩
-    # embedding = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
-    embedding = OpenAIEmbeddings()
+    embedding = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+    # embedding = OpenAIEmbeddings()
 
     # db에 임베딩된 데이터 저장
     db = Chroma.from_documents(
