@@ -1,8 +1,8 @@
-# [배포 시에만] chromadb의 sqlite3 버전 문제 해결 
-# requirements.txt 에 pysqlite3-binary 추가
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+# # [배포 시에만] chromadb의 sqlite3 버전 문제 해결 
+# # requirements.txt 에 pysqlite3-binary 추가
+# __import__('pysqlite3')
+# import sys
+# sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 # proto8 : StatGPT-2.0(이전대화 기억)
 # 대화 history가 저장되고,
@@ -10,8 +10,9 @@ sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 # 사용자의 질문에 대한 답변을 "langchain.RetrievalQA"으로 답변"하는 챗봇(출처 제공)
 # + 이전 대화를 기억해서 답변 생성
 
-import os
 import streamlit as st
+import os
+import time
 
 # api key
 # from dotenv import load_dotenv
@@ -38,7 +39,7 @@ st.markdown("# StatGPT-2.0")
 
 # 모델 초기화 with st.session_state
 if "openai_model" not in st.session_state:
-    st.session_state["openai_model"] = "gpt-3.5-turbo"         # LLM 모델 설정 : "gpt-3.5-turbo", "gpt-4"
+    st.session_state["openai_model"] = "gpt-4-turbo"         # LLM 모델 설정 : "gpt-3.5-turbo", "gpt-4"
 
 # 대화 초기화 with st.session_state
 if "messages" not in st.session_state:
@@ -67,8 +68,8 @@ def data_to_db(loader):
     persist_directory = 'db'
 
     # 임베딩
-    embedding = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
-    # embedding = OpenAIEmbeddings()
+    # embedding = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+    embedding = OpenAIEmbeddings()
 
     # db에 임베딩된 데이터 저장
     db = Chroma.from_documents(
@@ -146,7 +147,7 @@ if input := st.chat_input("What is up?"):   # ★★★ 사용자 인풋 창 ★
 
         # ★★★ full_response(전체 답변 string)을 화면에 출력하기
         message_placeholder.markdown(full_response)
-        st.write("출처 : ", source_list[0].replace('.txt', '').replace('data\\', '').replace('./data/','').replace('data/',''))   # 출처 화면에 표시
+        st.write("출처 : ", source_list[0].replace('data\\', '').replace('.txt', '').replace('./data/',''))   # 출처 화면에 표시
 
     # 생성된 챗봇 답변을 st.session_state에 저장
     st.session_state.messages.append({"role": "assistant", "content": full_response})
@@ -170,11 +171,11 @@ if input := st.chat_input("What is up?"):   # ★★★ 사용자 인풋 창 ★
         with open('data/input_data.txt', 'a', encoding='utf-8') as file:
             # input 입력
             file.write(input + "\n\n")
-
+    
     # input 데이터 db에 추가하기
     textloader = TextLoader("./data/input_data.txt")   # state_of_the_union.txt
-    data_to_db(textloader)
-
+    db = data_to_db(textloader)
+    time.sleep(0.1)
 
 
 
