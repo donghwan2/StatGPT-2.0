@@ -1,12 +1,12 @@
 langchain>=0.1.0
 openai==0.28.1
-langchain-openai
 pypdf
 chromadb==0.4.15
 tiktoken
 streamlit_extras
 pysqlite3-binary
 sentence-transformers
+
 
 
 
