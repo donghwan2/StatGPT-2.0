@@ -22,8 +22,8 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 # llm : langchain.ChatOpenAI
 # from langchain.llms import OpenAI
-from langchain import OpenAI
-# from langchain.chat_models import ChatOpenAI
+# from langchain import OpenAI
+from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
 from langchain.document_loaders import TextLoader
 from langchain.document_loaders import DirectoryLoader
@@ -123,7 +123,7 @@ if input := st.chat_input("What is up?"):   # ★★★ 사용자 인풋 창 ★
 
         ## RetrievalQA 구성하기
         qa_chain = RetrievalQA.from_chain_type(
-            llm=OpenAI(), 
+            llm=ChatOpenAI(), 
             chain_type="stuff", 
             retriever=retriever, 
             return_source_documents=True)
@@ -178,6 +178,7 @@ if input := st.chat_input("What is up?"):   # ★★★ 사용자 인풋 창 ★
     textloader = TextLoader("./data/input_data.txt")   # state_of_the_union.txt
     db = data_to_db(textloader)
     time.sleep(0.1)
+
 
 
 
